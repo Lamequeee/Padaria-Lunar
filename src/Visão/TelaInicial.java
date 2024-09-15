@@ -132,6 +132,14 @@ public class TelaInicial extends JFrame {
 		contentPane.add(lblNewLabel_3_1);
 		
 		JLabel lblNewLabel_1_1_2_2_1 = new JLabel("Sair");
+		lblNewLabel_1_1_2_2_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TelaLogin Login = new TelaLogin();
+				Login.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_1_1_2_2_1.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2_2_1.setBounds(53, 560, 40, 40);

@@ -18,6 +18,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TelaCrudFuncionario extends JFrame {
 
@@ -57,7 +60,7 @@ public class TelaCrudFuncionario extends JFrame {
 		JLabel lblNewLabel_1_1_2_2_1 = new JLabel("Usuario");
 		lblNewLabel_1_1_2_2_1.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1_1_2_2_1.setBounds(260, 21, 67, 40);
+		lblNewLabel_1_1_2_2_1.setBounds(260, 11, 67, 40);
 		contentPane.add(lblNewLabel_1_1_2_2_1);
 		
 		JLabel lblNewLabel_3 = new JLabel("");
@@ -66,6 +69,17 @@ public class TelaCrudFuncionario extends JFrame {
 		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_1_1_2 = new JLabel("Lista de alimentos");
+		lblNewLabel_1_1_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Chama a tela que eu quero abrir
+				TelaHistorico Historico = new TelaHistorico();
+				//Deixa visivel a tela que eu quero abrir
+				Historico.setVisible(true);
+				//fecha a tela que eu estou no momento
+				dispose();
+			}
+		});
 		lblNewLabel_1_1_2.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2.setBounds(56, 223, 194, 40);
@@ -77,6 +91,17 @@ public class TelaCrudFuncionario extends JFrame {
 		contentPane.add(lblNewLabel_3_1);
 		
 		JLabel lblNewLabel_1_1_2_1 = new JLabel("Cadastro de alimentos");
+		lblNewLabel_1_1_2_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Chama a tela que eu quero abrir
+				TelaCrudAlimento CrudAlimento = new TelaCrudAlimento();
+				//Deixa visivel a tela que eu quero abrir
+				CrudAlimento.setVisible(true);
+				//fecha a tela que eu estou no momento
+				dispose();
+			}
+		});
 		lblNewLabel_1_1_2_1.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2_1.setBounds(56, 311, 194, 40);
@@ -88,6 +113,17 @@ public class TelaCrudFuncionario extends JFrame {
 		contentPane.add(lblNewLabel_3_2);
 		
 		JLabel lblNewLabel_1_1_2_2 = new JLabel("Cadastro de funcionario");
+		lblNewLabel_1_1_2_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Chama a tela que eu quero abrir
+				TelaCrudFuncionario CrudFuncionario = new TelaCrudFuncionario();
+				//Deixa visivel a tela que eu quero abrir
+				CrudFuncionario.setVisible(true);
+				//fecha a tela que eu estou no momento
+				dispose();
+			}
+		});
 		lblNewLabel_1_1_2_2.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2_2.setBounds(56, 400, 194, 40);
@@ -101,6 +137,14 @@ public class TelaCrudFuncionario extends JFrame {
 		contentPane.add(lblNewLabel_1_1_2_2_1_1);
 		
 		JLabel lblNewLabel_1_1_2_2_1_2 = new JLabel("Sair");
+		lblNewLabel_1_1_2_2_1_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TelaInicial Inicio = new TelaInicial();
+				Inicio.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_1_1_2_2_1_2.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2_2_1_2.setBounds(56, 560, 40, 40);
@@ -124,32 +168,32 @@ public class TelaCrudFuncionario extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		textField = new JTextField();
-		textField.setBounds(331, 34, 86, 20);
+		textField.setBounds(331, 24, 86, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1_1_2_2_1_3 = new JLabel("Usuario");
 		lblNewLabel_1_1_2_2_1_3.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1_1_2_2_1_3.setBounds(440, 21, 67, 40);
+		lblNewLabel_1_1_2_2_1_3.setBounds(440, 11, 67, 40);
 		contentPane.add(lblNewLabel_1_1_2_2_1_3);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(511, 34, 86, 20);
+		textField_1.setBounds(511, 24, 86, 20);
 		contentPane.add(textField_1);
 		
 		JLabel lblNewLabel_1_1_2_2_1_4 = new JLabel("Usuario");
 		lblNewLabel_1_1_2_2_1_4.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1_4.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1_1_2_2_1_4.setBounds(614, 21, 67, 40);
+		lblNewLabel_1_1_2_2_1_4.setBounds(614, 11, 67, 40);
 		contentPane.add(lblNewLabel_1_1_2_2_1_4);
 		
 		//DAQUI PARA BAIXO FOI UM CODIGO PRONTO PELA MINHA ANTIGA PROFESSORA...
 		//CRIA O SCRILLPANE, QUE É ONDE O TABLE FICARA " DENTRO "
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(270, 80, 501, 520);
+		scrollPane.setBounds(270, 99, 501, 501);
 		contentPane.add(scrollPane);
 		//CHAMA O TABLE, QUE FOI CRIADO ATRAVES DO: PRIVATE JTable table NAS PRIMEIRAS LINHAS
 		table = new JTable();
@@ -168,7 +212,11 @@ public class TelaCrudFuncionario extends JFrame {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Funcionario", "Gerente"}));
-		comboBox.setBounds(682, 33, 89, 22);
+		comboBox.setBounds(682, 23, 89, 22);
 		contentPane.add(comboBox);
+		
+		JButton btnNewButton = new JButton("Confirmar");
+		btnNewButton.setBounds(472, 56, 99, 33);
+		contentPane.add(btnNewButton);
 	}
 }
