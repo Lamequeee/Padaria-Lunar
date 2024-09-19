@@ -1,7 +1,7 @@
 package Visão;
 
 import java.awt.EventQueue;
-
+import javax.swing.border.LineBorder;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,12 +21,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaCrudFuncionario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textUsuario;
+	private JTextField textSenha;
 	private JTable table;
 
 	/**
@@ -56,6 +58,9 @@ public class TelaCrudFuncionario extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		LineBorder redBorder = new LineBorder(Color.RED);
 		
 		JLabel lblNewLabel_1_1_2_2_1 = new JLabel("Usuario");
 		lblNewLabel_1_1_2_2_1.setForeground(Color.BLACK);
@@ -167,23 +172,23 @@ public class TelaCrudFuncionario extends JFrame {
 		lblNewLabel.setBounds(0, 0, 250, 611);
 		contentPane.add(lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(331, 24, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textUsuario = new JTextField();
+		textUsuario.setBounds(331, 24, 86, 20);
+		contentPane.add(textUsuario);
+		textUsuario.setColumns(10);
 		
-		JLabel lblNewLabel_1_1_2_2_1_3 = new JLabel("Usuario");
+		JLabel lblNewLabel_1_1_2_2_1_3 = new JLabel("Senha");
 		lblNewLabel_1_1_2_2_1_3.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2_2_1_3.setBounds(440, 11, 67, 40);
 		contentPane.add(lblNewLabel_1_1_2_2_1_3);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(511, 24, 86, 20);
-		contentPane.add(textField_1);
+		textSenha = new JTextField();
+		textSenha.setColumns(10);
+		textSenha.setBounds(511, 24, 86, 20);
+		contentPane.add(textSenha);
 		
-		JLabel lblNewLabel_1_1_2_2_1_4 = new JLabel("Usuario");
+		JLabel lblNewLabel_1_1_2_2_1_4 = new JLabel("Cargo");
 		lblNewLabel_1_1_2_2_1_4.setForeground(Color.BLACK);
 		lblNewLabel_1_1_2_2_1_4.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1_2_2_1_4.setBounds(614, 11, 67, 40);
@@ -210,12 +215,36 @@ public class TelaCrudFuncionario extends JFrame {
 		table.setFont(new Font("Krona One", Font.PLAIN, 11));
 		scrollPane.setViewportView(table);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Funcionario", "Gerente"}));
-		comboBox.setBounds(682, 23, 89, 22);
-		contentPane.add(comboBox);
+		JComboBox CBCargo = new JComboBox();
+		CBCargo.setModel(new DefaultComboBoxModel(new String[] {"Funcionario", "Gerente"}));
+		CBCargo.setBounds(682, 23, 89, 22);
+		contentPane.add(CBCargo);
 		
 		JButton btnNewButton = new JButton("Confirmar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textUsuario.getText().trim().equals("") || textSenha.getText().trim().equals("") || CBCargo.getSelectedIndex() == 0){
+								
+					if (textUsuario.getText().trim().equals("")) {
+						textUsuario.setBorder(redBorder);
+					}
+					if (textSenha.getText().trim().equals("")) {
+						textSenha.setBorder(redBorder);
+					}
+					if (CBCargo.getSelectedIndex() == 0) {
+						CBCargo.setBorder(redBorder);
+					} //FAZER O ELSE DEPOIS
+				
+				textUsuario.setText("");
+				textSenha.setText("");
+				CBCargo.setSelectedIndex(0);
+				
+				
+				DefaultTableModel tbltable = (DefaultTableModel) table.getModel();
+				//FAZER PARTE DE MOSTAR NO TABLE
+				}		
+			}
+		});
 		btnNewButton.setBounds(472, 56, 99, 33);
 		contentPane.add(btnNewButton);
 	}
