@@ -1,4 +1,4 @@
-package Visão;
+package Visao;
 
 import java.awt.EventQueue;
 import javax.swing.border.LineBorder;
@@ -16,6 +16,9 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import Controle.PessoaDAO;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -30,6 +33,7 @@ public class TelaCrudFuncionario extends JFrame {
 	private JTextField textUsuario;
 	private JTextField textSenha;
 	private JTable table;
+	private PessoaDAO pessDAO = PessoaDAO.getInstancia(); 
 
 	/**
 	 * Launch the application.
@@ -78,11 +82,18 @@ public class TelaCrudFuncionario extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chama a tela que eu quero abrir
-				TelaHistorico Historico = new TelaHistorico();
-				//Deixa visivel a tela que eu quero abrir
-				Historico.setVisible(true);
-				//fecha a tela que eu estou no momento
-				dispose();
+				
+				
+				String Cargo = pessDAO.passaLogado().getCargo();
+				if (Cargo.equals("Administrador") || Cargo.equals("Gerente de Vendas")) {
+					TelaHistorico Historico = new TelaHistorico();
+					//Deixa visivel a tela que eu quero abrir
+					Historico.setVisible(true);
+					//fecha a tela que eu estou no momento
+					dispose();
+				}else {
+					System.out.print("Não dá");
+				}
 			}
 		});
 		lblNewLabel_1_1_2.setForeground(Color.BLACK);

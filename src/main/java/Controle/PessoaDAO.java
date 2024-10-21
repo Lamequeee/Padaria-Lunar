@@ -181,6 +181,17 @@ public class PessoaDAO implements IPessoaDAO {
 		}
 		return pessAchado;
 	}
+	
+	public Pessoa logoff() {
+		return pessAchado = null;
+	}
+
+	
+	public Pessoa passaLogado() {
+		return pessAchado;
+	}
+	
+	
 	}
 
 

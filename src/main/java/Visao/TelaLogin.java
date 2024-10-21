@@ -1,24 +1,32 @@
-package Visão;
+package Visao;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Controle.PessoaDAO;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import Modelo.Pessoa;
 
 public class TelaLogin extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JPasswordField passwordField;
-
+	private JTextField textLogin;
+	private JPasswordField passwordSenha;
+	private PessoaDAO pessDAO = PessoaDAO.getInstancia();
 	/**
 	 * Launch the application.
 	 */
@@ -81,17 +89,69 @@ public class TelaLogin extends JFrame {
 		lblNewLabel_1_1_3_2.setBounds(272, 219, 141, 40);
 		contentPane.add(lblNewLabel_1_1_3_2);
 		
-		textField = new JTextField();
-		textField.setBounds(398, 74, 226, 29);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textLogin = new JTextField();
+		textLogin.setBounds(398, 74, 226, 29);
+		contentPane.add(textLogin);
+		textLogin.setColumns(10);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(398, 229, 226, 29);
-		contentPane.add(passwordField);
+		passwordSenha = new JPasswordField();
+		passwordSenha.setBounds(398, 229, 226, 29);
+		contentPane.add(passwordSenha);
 		
 		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Pega a string senha do TextField
+				String login = textLogin.getText();
+
+				// Pega o vetor de senha do TextField
+				char[] pass = passwordSenha.getPassword();
+
+				// Cria uma variável senha pra colocar o vetor
+				String senha = "";
+
+				// Se o vetor de senha não for nulo e maior do que 0...
+				if (pass != null && pass.length > 0) {
+					// Atribui o vetor pra uma variavel senha
+					senha = String.valueOf(pass);
+				}
+				
+				if (senha.isEmpty() && login.isEmpty()) {
+					System.out.printf("Insira seus dados0");
+				} else if (senha.isEmpty()) {
+					// Exibe mensagem de erro
+					System.out.printf("Insira sua senha");
+				} else if (login.isEmpty()) {
+					// Exibe mensagem de erro
+					System.out.printf("Insira seus login");
+				} else {
+					// Cria obj Funcionário para atribuir login e senha
+					Pessoa testelogin = new Pessoa();
+					testelogin.setUsuario(login);
+					testelogin.setSenha(senha);
+
+					// Cria uma variavel boolean login1 que verifica se há o usuário no banco
+					Pessoa funcTesteLogin = pessDAO.login(testelogin);
+
+					// Se o valor retornado pela função ser true
+					if (funcTesteLogin != null) {
+						// Passa para a proxima tela
+						TelaInicial telaPrincipal = new TelaInicial();
+						dispose();
+						telaPrincipal.setVisible(true);
+						
+					} else {
+						// Exibe mensagem de erro
+						JOptionPane.showMessageDialog(null, "Usuario ou senha errados");
+					
+					}
+
+				}
+
+			}
+		});
 		btnEntrar.setBounds(398, 346, 99, 33);
 		contentPane.add(btnEntrar);
+		
 	}
 }
