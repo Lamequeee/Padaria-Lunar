@@ -5,6 +5,7 @@ public class Pessoa {
 	private String Usuario;
 	private String Senha;
 	private String Cargo;
+	private Integer id_pessoa;
 	
 	public String getUsuario() {
 		return Usuario;
@@ -20,6 +21,14 @@ public class Pessoa {
 	
 	public void setSenha(String Senha) {
 		this.Senha = Senha;
+	}
+	
+	public Integer getIdPessoa() {
+		return id_pessoa;
+	}
+
+	public void setIdPessoa(Integer id_pessoa) {
+		this.id_pessoa = id_pessoa;
 	}
 	
 	public String getCargo() {

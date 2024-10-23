@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import Controle.PessoaDAO;
+import Modelo.Pessoa;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -34,6 +35,7 @@ public class TelaCrudFuncionario extends JFrame {
 	private JTextField textSenha;
 	private JTable table;
 	private PessoaDAO pessDAO = PessoaDAO.getInstancia(); 
+	private JTextField textId;
 
 	/**
 	 * Launch the application.
@@ -205,6 +207,11 @@ public class TelaCrudFuncionario extends JFrame {
 		lblNewLabel_1_1_2_2_1_4.setBounds(614, 11, 67, 40);
 		contentPane.add(lblNewLabel_1_1_2_2_1_4);
 		
+		JComboBox CBCargo = new JComboBox();
+		CBCargo.setModel(new DefaultComboBoxModel(new String[] {"","Funcionario", "Gerente"}));	
+		CBCargo.setBounds(682, 23, 89, 22);
+		contentPane.add(CBCargo);
+		
 		//DAQUI PARA BAIXO FOI UM CODIGO PRONTO PELA MINHA ANTIGA PROFESSORA...
 		//CRIA O SCRILLPANE, QUE É ONDE O TABLE FICARA " DENTRO "
 		JScrollPane scrollPane = new JScrollPane();
@@ -212,51 +219,102 @@ public class TelaCrudFuncionario extends JFrame {
 		scrollPane.setBounds(270, 99, 501, 501);
 		contentPane.add(scrollPane);
 		//CHAMA O TABLE, QUE FOI CRIADO ATRAVES DO: PRIVATE JTable table NAS PRIMEIRAS LINHAS
-		table = new JTable();
+		table = new JTable();		
+		table.setFont(new Font("Krona One", Font.PLAIN, 11));
+		table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+			
+					int setar = table.getSelectedRow();
+					Integer IdPessoa = Integer.valueOf(table.getModel().getValueAt(setar, 0).toString());
+				Pessoa pessC = new Pessoa();
+				
+				pessC = pessDAO.clicado(IdPessoa);
+					
+					textUsuario.setText(pessC.getUsuario());
+					textSenha.setText(pessC.getSenha());
+					if (pessC.getCargo().equals("Gerente")) {
+						CBCargo.setSelectedIndex(1);
+					} else if(pessC.getCargo().equals("Funcionario")){
+						CBCargo.setSelectedIndex(2);
+				} else {
+				CBCargo.setSelectedIndex(0);
+				}
+					
+					textUsuario.setEditable(false);
+					textSenha.setEditable(false);
+					CBCargo.setEditable(false);
+		
+				textId.setText(String.valueOf(pessC.getIdPessoa()));
+					
+				}
+			});
+				
 		
 		//CRIA O MODELO DO TABLE
-		table.setModel(new DefaultTableModel(
-			new Object[][] {},
-			new String[] {
-					//AQUI É O NOME DAS COLUNAS CRIADAS, PODE SER ALTURADO A QUANTIDADE E NOME POR AQUI
-					"Usuario", "Senha", "Cargo"
-						 }
-		));
-		
-		table.setFont(new Font("Krona One", Font.PLAIN, 11));
-		scrollPane.setViewportView(table);
-		
-		JComboBox CBCargo = new JComboBox();
-		CBCargo.setModel(new DefaultComboBoxModel(new String[] {"Funcionario", "Gerente"}));
-		CBCargo.setBounds(682, 23, 89, 22);
-		contentPane.add(CBCargo);
-		
+				scrollPane.setViewportView(table);
+				table.setModel(new DefaultTableModel(new Object[][] {},new String[] {"ID", "Usuario", "Senha", "Cargo", "Ações"	}));
+				
+				for (Pessoa pess : pessDAO.ListarPessoa()) {
+				    DefaultTableModel tblModel = (DefaultTableModel) table.getModel();
+				    String data[] = {String.valueOf(pess.getIdPessoa()), pess.getUsuario(), pess.getSenha(), pess.getCargo()};
+				    tblModel.addRow(data);
+				}
+
+				
 		JButton btnNewButton = new JButton("Confirmar");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (textUsuario.getText().trim().equals("") || textSenha.getText().trim().equals("") || CBCargo.getSelectedIndex() == 0){
-								
-					if (textUsuario.getText().trim().equals("")) {
-						textUsuario.setBorder(redBorder);
-					}
-					if (textSenha.getText().trim().equals("")) {
-						textSenha.setBorder(redBorder);
-					}
-					if (CBCargo.getSelectedIndex() == 0) {
-						CBCargo.setBorder(redBorder);
-					} //FAZER O ELSE DEPOIS
-				
-				textUsuario.setText("");
-				textSenha.setText("");
-				CBCargo.setSelectedIndex(0);
-				
-				
-				DefaultTableModel tbltable = (DefaultTableModel) table.getModel();
-				//FAZER PARTE DE MOSTAR NO TABLE
-				}		
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        // Validação dos campos
+		        if (textUsuario.getText().trim().equals("") || textSenha.getText().trim().equals("") || CBCargo.getSelectedIndex() == 0) {
+		            if (textUsuario.getText().trim().equals("")) {
+		                textUsuario.setBorder(redBorder);
+		            }
+		            if (textSenha.getText().trim().equals("")) {
+		                textSenha.setBorder(redBorder);
+		            }
+		            if (CBCargo.getSelectedIndex() == 0) {
+		                CBCargo.setBorder(redBorder);
+		            }
+		        } else {
+		            // Verifica se o usuário já existe
+		            if (pessDAO.ListarPessoa(textUsuario.getText().trim()) == null) {
+		                Pessoa pess1 = new Pessoa();
+		                String Usuario = textUsuario.getText();
+		                String senha = textSenha.getText();
+		                String cargo = (String) CBCargo.getSelectedItem();
+		                
+		                pess1.setUsuario(Usuario);
+		                pess1.setSenha(senha);
+		                pess1.setCargo(cargo);
+		                
+		                Integer id_pessoa = pessDAO.inserir(pess1);
+		                
+		                String data[] = {String.valueOf(id_pessoa), Usuario, senha, cargo};
+		                
+		                // Adiciona a nova linha na tabela
+		                DefaultTableModel tbltable = (DefaultTableModel) table.getModel();
+		                tbltable.addRow(data);
+		                tbltable.fireTableDataChanged();  // Atualiza a tabela visualmente
+		                
+		                // Limpa os campos após inserção
+		                textUsuario.setText("");
+		                textSenha.setText("");
+		                CBCargo.setSelectedIndex(0);
+		            } else {
+		                System.out.print("Erro: Usuário já existe.");
+		            }
+		        }
+		    }
 		});
+
 		btnNewButton.setBounds(472, 56, 99, 33);
 		contentPane.add(btnNewButton);
+		
+		textId = new JTextField();
+		textId.setEditable(false);
+		textId.setColumns(10);
+		textId.setBounds(270, 62, 40, 20);
+		contentPane.add(textId);
 	}
 }

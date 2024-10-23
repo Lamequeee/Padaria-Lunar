@@ -28,7 +28,7 @@ public class PessoaDAO implements IPessoaDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "INSERT INTO pessoa " + "(Usuario, " + " Senha, " + " Cargo) " + "VALUES (?,?,?)";
+		String query = "INSERT INTO pessoa (Usuario, Senha, Cargo) VALUES (?, ?, ?)";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -37,6 +37,7 @@ public class PessoaDAO implements IPessoaDAO {
 			ps.setString(2, f.getSenha());
 			ps.setString(3, f.getCargo());
 			
+			ps.executeUpdate();
 		
 		try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 			if (generatedKeys.next()) {
@@ -45,7 +46,7 @@ public class PessoaDAO implements IPessoaDAO {
 				throw new SQLException("Creating user failed, no ID obtained.");
 			}
 		}
-
+		
 	} catch (SQLException e) {
 		e.printStackTrace();
 		
@@ -61,13 +62,14 @@ public class PessoaDAO implements IPessoaDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "UPDATE Pessoa SET Usuario = ?," + "Senha =?," + "Cargo = ?" + "Where Usuario = ?";
+		String query = "UPDATE Pessoa SET Usuario = ?," + "Senha =?," + "Cargo = ?" + "Where id_pessoa = ?";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.setString(1, f.getUsuario());
 			ps.setString(2, f.getSenha());
 			ps.setString(3, f.getCargo());
+			ps.setInt(4, f.getIdPessoa());
 			
 			ps.executeUpdate();
 			 
@@ -87,7 +89,7 @@ public class PessoaDAO implements IPessoaDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "UPDATE Pessoa SET Usuario = ?," + "Senha =?," + "Cargo = ?" + "Where Usuario = ?";
+		String query = "UPDATE Pessoa SET Usuario = ?," + "Senha =?," + "Cargo = ?" + "Where id_pessoa = ?";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query);
@@ -112,7 +114,7 @@ public class PessoaDAO implements IPessoaDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "DELETE FROM Pessoa Where Usuario = ?";
+		String query = "DELETE FROM Pessoa Where id_pessoa = ?";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query);
@@ -146,13 +148,15 @@ public class PessoaDAO implements IPessoaDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-
+				
+				Integer id_pessoa = rs.getInt("id_pessoa");
 				String Usuario = rs.getString("Usuario");
 				String Senha = rs.getString("Senha");
 				String Cargo = rs.getString("Cargo");
 				
 				Pessoa F = new Pessoa();
 
+				F.setIdPessoa(id_pessoa);
 				F.setUsuario(Usuario);
 				F.setSenha(Senha);
 				F.setCargo(Cargo);
@@ -191,6 +195,81 @@ public class PessoaDAO implements IPessoaDAO {
 		return pessAchado;
 	}
 	
+	
+	public Pessoa clicado(Integer f) {
+		Conexao c = Conexao.getInstancia();
+
+		Connection con = c.conectar();
+
+		Pessoa F = new Pessoa();
+
+		String Query = "SELECT * FROM Pessoa WHERE id_pessoa = ?";
+
+		try {
+			PreparedStatement ps = con.prepareStatement(Query);
+
+			ps.setInt(1, f);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				Integer id_pessoa = rs.getInt("id_pessoa");
+				String Usuario = rs.getString("Usuario");
+				String Senha = rs.getString("Senha");
+				String Cargo = rs.getString("Cargo");
+		
+				F.setIdPessoa(id_pessoa);
+				F.setUsuario(Usuario);
+				F.setSenha(Senha);
+				F.setCargo(Cargo);
+				
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			c.fecharConexao();
+		}
+
+		return F;
+	}
+
+	public Pessoa ListarPessoa(String usuario) {
+	    Conexao c = Conexao.getInstancia();
+	    Connection con = c.conectar();
+	    Pessoa pessoa = null;
+
+	    String Query = "SELECT * FROM Pessoa WHERE Usuario = ?";
+
+	    try {
+	        PreparedStatement ps = con.prepareStatement(Query);
+	        ps.setString(1, usuario);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            Integer id_pessoa = rs.getInt("id_pessoa");
+	            String Usuario = rs.getString("Usuario");
+	            String Senha = rs.getString("Senha");
+	            String Cargo = rs.getString("Cargo");
+
+	            pessoa = new Pessoa();
+	            pessoa.setIdPessoa(id_pessoa);
+	            pessoa.setUsuario(Usuario);
+	            pessoa.setSenha(Senha);
+	            pessoa.setCargo(Cargo);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        c.fecharConexao();
+	    }
+
+	    return pessoa;
+	}
+
+
 	
 	}
 

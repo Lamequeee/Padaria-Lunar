@@ -15,5 +15,7 @@ public interface IPessoaDAO {
 	public ArrayList<Pessoa> ListarPessoa();
 
 	public Pessoa login(Pessoa f);
+	
+	public Pessoa clicado(Integer f);
 
 }

@@ -10,9 +10,11 @@ USE Padaria;
 
 -- <--- Criando tabela -->> 
 CREATE TABLE IF NOT EXISTS `Pessoa`(
+	`id_pessoa` BIGINT NOT NULL auto_increment,
 	`Usuario` VARCHAR(10) NOT NULL,
     `Senha` VARCHAR(8) NOT NULL,
-    `Cargo` VARCHAR(45) NOT NULL
+    `Cargo` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`id_pessoa`)
 );
 
 CREATE TABLE IF NOT EXISTS `Alimentos`(
