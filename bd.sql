@@ -5,8 +5,7 @@ DROP DATABASE IF EXISTS Padaria;
 CREATE DATABASE IF NOT EXISTS Padaria;
 
 -- Usa o banco
-USE Padaria;	
-
+USE Padaria;
 
 -- <--- Criando tabela -->> 
 CREATE TABLE IF NOT EXISTS `Pessoa`(

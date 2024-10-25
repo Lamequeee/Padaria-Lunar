@@ -13,18 +13,24 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import Controle.PessoaDAO;
 import Modelo.Pessoa;
+import raven.cell.TableActionCellEditor;
+import raven.cell.TableActionCellRender;
+import raven.cell.TableActionEvent;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -219,7 +225,7 @@ public class TelaCrudFuncionario extends JFrame {
 		scrollPane.setBounds(270, 99, 501, 501);
 		contentPane.add(scrollPane);
 		//CHAMA O TABLE, QUE FOI CRIADO ATRAVES DO: PRIVATE JTable table NAS PRIMEIRAS LINHAS
-		table = new JTable();		
+		table = new JTable();
 		table.setFont(new Font("Krona One", Font.PLAIN, 11));
 		table.addMouseListener(new MouseAdapter() {
 				@Override
@@ -253,7 +259,20 @@ public class TelaCrudFuncionario extends JFrame {
 		
 		//CRIA O MODELO DO TABLE
 				scrollPane.setViewportView(table);
-				table.setModel(new DefaultTableModel(new Object[][] {},new String[] {"ID", "Usuario", "Senha", "Cargo", "Ações"	}));
+				table.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+						"ID", "Usuario", "Senha", "Cargo", "A\u00E7\u00F5es"
+					}
+				) {
+					boolean[] columnEditables = new boolean[] {
+						false, false, false, false, true
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
 				
 				for (Pessoa pess : pessDAO.ListarPessoa()) {
 				    DefaultTableModel tblModel = (DefaultTableModel) table.getModel();
@@ -307,6 +326,7 @@ public class TelaCrudFuncionario extends JFrame {
 		        }
 		    }
 		});
+		
 
 		btnNewButton.setBounds(472, 56, 99, 33);
 		contentPane.add(btnNewButton);
@@ -316,5 +336,75 @@ public class TelaCrudFuncionario extends JFrame {
 		textId.setColumns(10);
 		textId.setBounds(270, 62, 40, 20);
 		contentPane.add(textId);
+		
+		TableActionEvent event = new TableActionEvent() {
+			
+			@Override
+			public void onView(int row) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onEdit(int row) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onDelete(int row) {
+				int linhaSelecionada = table.getSelectedRow(); // Obtém a linha selecionada na tabela
+
+				if (linhaSelecionada >= 0 && linhaSelecionada < table.getRowCount()) {  // Verifica se a linha selecionada é válida
+				    // Obtém o ID da pessoa a partir da tabela (coluna 0)
+				    Integer id_pessoa = Integer.valueOf(table.getModel().getValueAt(linhaSelecionada, 0).toString());
+
+				    // Cria uma instância de Pessoa e define o ID
+				    Pessoa pessDelete = new Pessoa();
+				    pessDelete.setIdPessoa(id_pessoa); // Atribui o ID da pessoa a ser excluída
+
+				    // Chama o DAO para executar a exclusão no banco de dados
+				    boolean sucesso = pessDAO.excluir(pessDelete);
+
+				    if (sucesso) {
+				        // Atualiza a tabela removendo a linha correspondente
+				        DefaultTableModel model = (DefaultTableModel) table.getModel();
+				        model.removeRow(linhaSelecionada); // Remove a linha da tabela
+
+				        // Após remover a linha, ajusta a seleção
+				        if (table.getRowCount() > 0) {
+				            // Se ainda houver linhas, selecione a próxima linha ou a anterior
+				            if (linhaSelecionada >= table.getRowCount()) {
+				                linhaSelecionada = table.getRowCount() - 1; // Se a linha removida era a última, selecione a anterior
+				            }
+				            table.setRowSelectionInterval(linhaSelecionada, linhaSelecionada); // Ajusta a seleção
+				        } else {
+				            table.clearSelection(); // Se não houver mais linhas, limpe a seleção
+				        }
+
+				        // Atualiza visualmente a tabela
+				        model.fireTableDataChanged();
+				        table.revalidate();
+				        table.repaint();
+
+				        JOptionPane.showMessageDialog(null, "Pessoa excluída com sucesso!");
+				    } else {
+				        JOptionPane.showMessageDialog(null, "Erro ao excluir a pessoa no banco de dados.");
+				    }
+				} else {
+				    JOptionPane.showMessageDialog(null, "Selecione uma linha válida para excluir.");
+				}
+
+			}};
+
+		
+		table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
+		table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
+		table.setRowHeight(33);
+		table.getColumnModel().getColumn(0).setPreferredWidth(10);
+		table.getColumnModel().getColumn(4).setPreferredWidth(90);
+		
 	}
 }
+
+

@@ -111,26 +111,26 @@ public class PessoaDAO implements IPessoaDAO {
 	}
 
 	public boolean excluir(Pessoa f) {
-		Conexao c = Conexao.getInstancia();
-		Connection con = c.conectar();
-		
-		String query = "DELETE FROM Pessoa Where id_pessoa = ?";
-		
-		try {
-			PreparedStatement ps = con.prepareStatement(query);
-		
-			ps.setString(1, f.getUsuario());
-			
-			ps.executeUpdate();
-			return true;
-		}catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			c.fecharConexao();
-		}
+	    Conexao c = Conexao.getInstancia(); // Obtém a conexão
+	    Connection con = c.conectar(); // Conecta ao banco de dados
+	    
+	    String query = "DELETE FROM Pessoa WHERE id_pessoa = ?";
+	    
+	    try {
+	        PreparedStatement ps = con.prepareStatement(query);
+	        ps.setInt(1, f.getIdPessoa()); // Usa o ID da pessoa para excluir
 
-		return false;
+	        int affectedRows = ps.executeUpdate(); // Executa a query de exclusão
+	        
+	        return affectedRows > 0; // Retorna true se a exclusão foi bem-sucedida
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false; // Retorna false se ocorrer um erro
+	    } finally {
+	        c.fecharConexao(); // Fecha a conexão
+	    }
 	}
+
 
 	
 	public ArrayList<Pessoa> ListarPessoa() {
