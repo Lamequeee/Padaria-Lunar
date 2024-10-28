@@ -239,17 +239,17 @@ public class TelaCrudFuncionario extends JFrame {
 					
 					textUsuario.setText(pessC.getUsuario());
 					textSenha.setText(pessC.getSenha());
-					if (pessC.getCargo().equals("Gerente")) {
+					if (pessC.getCargo().equals("Funcionario")) {
 						CBCargo.setSelectedIndex(1);
-					} else if(pessC.getCargo().equals("Funcionario")){
+					} else if(pessC.getCargo().equals("Gerente")){
 						CBCargo.setSelectedIndex(2);
 				} else {
 				CBCargo.setSelectedIndex(0);
 				}
 					
-					textUsuario.setEditable(false);
-					textSenha.setEditable(false);
-					CBCargo.setEditable(false);
+					textUsuario.setEditable(true);
+					textSenha.setEditable(true);
+					CBCargo.setEditable(true);
 		
 				textId.setText(String.valueOf(pessC.getIdPessoa()));
 					
@@ -347,8 +347,34 @@ public class TelaCrudFuncionario extends JFrame {
 			
 			@Override
 			public void onEdit(int row) {
-				// TODO Auto-generated method stub
 				
+				Pessoa pess1 = new Pessoa();
+				if(!textUsuario.getText().trim().equals("") && !textSenha.getText().trim().equals("") && !(CBCargo.getSelectedIndex() == 0)) {
+					pess1.setIdPessoa(Integer.valueOf(textId.getText()));
+					pess1.setUsuario(textUsuario.getText().trim());
+					pess1.setSenha(textSenha.getText().trim());
+					pess1.setCargo(CBCargo.getSelectedItem().toString());
+
+					if(pessDAO.ListarPessoa(pess1.getUsuario()) == null) {
+						pessDAO.atualizarPessoa(pess1);
+				       
+					}else {
+						JOptionPane.showMessageDialog(null, "Usu existe pae!");
+					}
+				}else {
+						JOptionPane.showMessageDialog(null, "Preencha todos os dados");
+					}
+				if(textUsuario.getText().equals("")) {
+					textUsuario.setBorder(redBorder);
+				}
+				if(textSenha.getText().equals("")) {
+					textSenha.setBorder(redBorder);
+				}
+				
+				 atualizarTabela(); 
+			        textUsuario.setText("");
+	                textSenha.setText("");
+	                CBCargo.setSelectedIndex(0);
 			}
 			
 			@Override
@@ -395,7 +421,10 @@ public class TelaCrudFuncionario extends JFrame {
 				    JOptionPane.showMessageDialog(null, "Selecione uma linha válida para excluir.");
 				}
 
-			}};
+			}
+			
+		
+		};
 
 		
 		table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
@@ -405,6 +434,20 @@ public class TelaCrudFuncionario extends JFrame {
 		table.getColumnModel().getColumn(4).setPreferredWidth(90);
 		
 	}
+	
+	//ATUALIZAR A LISTA SEM EU PRECISAR REABRIR O PROGRAMA
+	public void atualizarTabela() {
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0); // Limpa o modelo existente
+
+	    List<Pessoa> pessoas = pessDAO.ListarPessoa(); // Busca todos os registros do banco
+	    for (Pessoa pessoa : pessoas) {
+	        model.addRow(new Object[]{pessoa.getIdPessoa(), pessoa.getUsuario(), pessoa.getSenha(), pessoa.getCargo()});
+	    }
+
+	    model.fireTableDataChanged(); // Notifica a tabela sobre as mudanças
+	}
+
 }
 
 

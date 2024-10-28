@@ -62,7 +62,8 @@ public class PessoaDAO implements IPessoaDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "UPDATE Pessoa SET Usuario = ?," + "Senha =?," + "Cargo = ?" + "Where id_pessoa = ?";
+		String query = "UPDATE Pessoa SET Usuario = ?, Senha = ?, Cargo = ? WHERE id_pessoa = ?";
+
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query);
