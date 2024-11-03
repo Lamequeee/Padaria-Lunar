@@ -1,5 +1,7 @@
 package Controle;
 
+import Modelo.Alimento;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,10 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import Modelo.Alimento;
-import Modelo.Pessoa;
+import Modelo.IAlimentoDAO;
 
-public class AlimentoDAO {
+public class AlimentoDAO implements IAlimentoDAO {
 	
 	public static AlimentoDAO instancia;
 	
@@ -23,11 +24,11 @@ public class AlimentoDAO {
 	
 	public Alimento AlimentoAchado = null;
 	
-	public Integer inserirALimento(Alimento f) {
+	public Integer inserirAlimento(Alimento f) {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "INSERT INTO alimento (Nome_alimento, Valor, Promocao, Quantidade) VALUES (?,?,?,?)";
+		String query = "INSERT INTO alimentos (Nome_alimento, Valor, Promocao, Quantidade) VALUES (?,?,?,?)";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -61,7 +62,8 @@ public class AlimentoDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "UPDATE Alimento SET Nome_Alimento = ?, Valor = ?, Promocao = ?, Quantidade = ? WHERE id_alimento = ?)";
+		String query = "UPDATE Alimentos SET Nome_Alimento = ?, Valor = ?, Promocao = ?, Quantidade = ? WHERE id_alimento = ?";
+
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -85,11 +87,11 @@ public class AlimentoDAO {
 		return false;
 	}
 	
-	public boolean atualizarAli(Alimento f) {
+	public boolean atualizar_ali(Alimento f) {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "UPDATE Alimento SET Nome_Alimento = ?, Valor = ?, Promocao = ?, Quantidade = ? WHERE id_alimento = ?)";
+		String query = "UPDATE Alimentos SET Nome_Alimento = ?, Valor = ?, Promocao = ?, Quantidade = ? WHERE id_alimento = ?";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -117,7 +119,8 @@ public class AlimentoDAO {
 		Conexao c = Conexao.getInstancia();
 		Connection con = c.conectar();
 		
-		String query = "DELETE FROM Alimento WHERE id_alimento";
+		String query = "DELETE FROM Alimentos WHERE id_alimento = ?";
+
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(query);
@@ -141,7 +144,7 @@ public class AlimentoDAO {
 	
 	ArrayList<Alimento> Alimento = new ArrayList<>();
 	
-	String query = "SELECT * FROM Alimento";
+	String query = "SELECT * FROM Alimentos";
 	
 	try {
 		PreparedStatement ps = con.prepareStatement(query);
@@ -150,19 +153,21 @@ public class AlimentoDAO {
 	
 		while(rs.next()) {
 			
-			Integer Id_alimento = rs.getInt("id_alimento");
+			Integer Id_alimento = rs.getInt("Id_alimento");
 			String Nome_alimento = rs.getString("Nome_Alimento");
+			Integer Quantidade = rs.getInt("Quantidade");
 			Double Valor = rs.getDouble("Valor");
 			String Promocao = rs.getString("Promocao");
-			Integer Quantidade = rs.getInt("Quantidade");
+			
 			
 			Alimento F = new Alimento();
 			
 			F.setId_alimento(Id_alimento);
 			F.setNome_alimento(Nome_alimento);
+			F.setQuantidade(Quantidade);
 			F.setValor(Valor);
 			F.setPromocao(Promocao);
-			F.setQuantidade(Quantidade);
+			
 			
 			Alimento.add(F);
 		}
@@ -181,7 +186,7 @@ public class AlimentoDAO {
 
 		Alimento F = new Alimento();
 
-		String Query = "SELECT * FROM Alimento WHERE Id_alimento = ?";
+		String Query = "SELECT * FROM Alimentos WHERE Id_alimento = ?";
 
 		try {
 			PreparedStatement ps = con.prepareStatement(Query);
@@ -194,15 +199,17 @@ public class AlimentoDAO {
 
 				Integer Id_alimento = rs.getInt("id_alimento");
 				String Nome_alimento = rs.getString("Nome_Alimento");
+				Integer Quantidade = rs.getInt("Quantidade");
 				Double Valor = rs.getDouble("Valor");
 				String Promocao = rs.getString("Promocao");
-				Integer Quantidade = rs.getInt("Quantidade");
+				
 								
 				F.setId_alimento(Id_alimento);
 				F.setNome_alimento(Nome_alimento);
+				F.setQuantidade(Quantidade);
 				F.setValor(Valor);
 				F.setPromocao(Promocao);
-				F.setQuantidade(Quantidade);
+				
 				
 			}
 
@@ -215,12 +222,12 @@ public class AlimentoDAO {
 		return F;
 	}
 	
-	public Alimento ListarPessoa(String Nome_alimento) {
+	public Alimento ListarAlimento(String Nome_alimento) {
 	    Conexao c = Conexao.getInstancia();
 	    Connection con = c.conectar();
 	    Alimento alimento = null;
 
-	    String Query = "SELECT * FROM Alimento WHERE Nome_alimento = ?";
+	    String Query = "SELECT * FROM Alimentos WHERE Nome_alimento = ?";
 
 	    try {
 	        PreparedStatement ps = con.prepareStatement(Query);
@@ -230,17 +237,19 @@ public class AlimentoDAO {
 	        if (rs.next()) {
 	        	Integer Id_alimento = rs.getInt("id_alimento");
 				String Nome_Alimento = rs.getString("Nome_Alimento");
+				Integer Quantidade = rs.getInt("Quantidade");
 				Double Valor = rs.getDouble("Valor");
 				String Promocao = rs.getString("Promocao");
-				Integer Quantidade = rs.getInt("Quantidade");
+				
 						
 				alimento = new Alimento();
 				
 				alimento.setId_alimento(Id_alimento);
 				alimento.setNome_alimento(Nome_alimento);
+				alimento.setQuantidade(Quantidade);
 				alimento.setValor(Valor);
 				alimento.setPromocao(Promocao);
-				alimento.setQuantidade(Quantidade);
+				
 	        }
 
 	    } catch (SQLException e) {
@@ -251,6 +260,7 @@ public class AlimentoDAO {
 
 	    return alimento;
 	}
+
 
 
 }

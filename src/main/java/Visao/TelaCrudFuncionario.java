@@ -93,7 +93,7 @@ public class TelaCrudFuncionario extends JFrame {
 				
 				
 				String Cargo = pessDAO.passaLogado().getCargo();
-				if (Cargo.equals("Administrador") || Cargo.equals("Gerente de Vendas")) {
+				if (Cargo.equals("Administrador") || Cargo.equals("Gerente")) {
 					TelaHistorico Historico = new TelaHistorico();
 					//Deixa visivel a tela que eu quero abrir
 					Historico.setVisible(true);
@@ -429,9 +429,9 @@ public class TelaCrudFuncionario extends JFrame {
 		
 		table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
 		table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
-		table.setRowHeight(33);
 		table.getColumnModel().getColumn(0).setPreferredWidth(10);
 		table.getColumnModel().getColumn(4).setPreferredWidth(90);
+		table.setRowHeight(33);
 		
 	}
 	
