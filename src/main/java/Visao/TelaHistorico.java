@@ -180,7 +180,7 @@ public class TelaHistorico extends JFrame {
 			new Object[][] {},
 			new String[] {
 					//AQUI É O NOME DAS COLUNAS CRIADAS, PODE SER ALTURADO A QUANTIDADE E NOME POR AQUI
-					"Alimento", "Data", "Valor"
+					"Alimento", "Quantidade", "Valor"
 						 }
 		));
 		

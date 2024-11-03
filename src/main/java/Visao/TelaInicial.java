@@ -5,6 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Controle.PessoaDAO;
+import Modelo.Pessoa;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -16,8 +20,9 @@ import java.awt.event.MouseEvent;
 
 public class TelaInicial extends JFrame {
 
+	
 	private JPanel contentPane;
-
+	private PessoaDAO pessDAO = PessoaDAO.getInstancia();
 	/**
 	 * Launch the application.
 	 */
@@ -64,10 +69,16 @@ public class TelaInicial extends JFrame {
 		lblNewLabel_1.setBounds(433, 69, 194, 40);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("<usuario>");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblNewLabel_2.setBounds(461, 120, 141, 54);
-		contentPane.add(lblNewLabel_2);
+		
+		Pessoa log = new Pessoa();
+		log = pessDAO.passaLogado();
+		JLabel textPuxa = new JLabel(log.getUsuario());
+		textPuxa.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		textPuxa.setBounds(472, 120, 141, 54);
+		contentPane.add(textPuxa);
+		
+		JFrame frame = this;
+		
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Lunar");
 		lblNewLabel_1_1_1.setForeground(new Color(0, 0, 0));

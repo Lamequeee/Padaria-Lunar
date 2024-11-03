@@ -19,6 +19,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaCrudAlimento extends JFrame {
 
@@ -307,10 +309,10 @@ public class TelaCrudAlimento extends JFrame {
 				table.setFont(new Font("Krona One", Font.PLAIN, 11));
 				scrollPane.setViewportView(table);
 				
-				JLabel lblNewLabel_1_1_2_2_1_3_1_1 = new JLabel("Data");
+				JLabel lblNewLabel_1_1_2_2_1_3_1_1 = new JLabel("Quantidade");
 				lblNewLabel_1_1_2_2_1_3_1_1.setForeground(Color.BLACK);
 				lblNewLabel_1_1_2_2_1_3_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-				lblNewLabel_1_1_2_2_1_3_1_1.setBounds(578, 44, 44, 40);
+				lblNewLabel_1_1_2_2_1_3_1_1.setBounds(523, 44, 99, 40);
 				contentPane.add(lblNewLabel_1_1_2_2_1_3_1_1);
 				
 				textField_4 = new JTextField();
@@ -319,6 +321,11 @@ public class TelaCrudAlimento extends JFrame {
 				contentPane.add(textField_4);
 				
 				JButton btnNewButton = new JButton("Confirmar");
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+				});
 				btnNewButton.setBounds(460, 86, 99, 33);
 				contentPane.add(btnNewButton);
 		
